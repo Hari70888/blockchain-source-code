@@ -1,0 +1,213 @@
+# blockchain sensor detection
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.8.2 <0.9.0;
+
+/**
+ * @title Storage
+ * @dev Store & retrieve value in a variable
+ * @custom:dev-run-script ./scripts/deploy_with_ethers.ts
+ */
+contract SensorSending {
+
+    string public sensorID;
+    string public sensorLoad;
+    function CPU(string memory sensorData, string memory id) public{
+        sensorID = id;
+        sensorLoad = sensorData;
+    }
+
+
+}
+# blockchain input and output by setter and getter methods
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.9;
+
+
+contract MoodDiary {
+    string mood;
+
+    function getMood() public view returns(string memory) {
+        return mood;
+
+    }
+    function setMood(string memory _mood) public {
+        mood = _mood;
+    }
+
+}
+#javascript code for data compression and decompression by intermixing Haffmans  and livzemple 
+const ContractABI = [
+    {
+      inputs: [],
+      name: 'getMood',
+      outputs: [
+        {
+          internalType: 'string',
+          name: '',
+          type: 'string',
+        },  
+      ],
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      inputs: [
+          {
+              internalType: 'string',
+              name: '_mood',
+              type: 'string',
+  
+          },
+      ],
+      name: 'setMood',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },  
+  ]
+  const ContractAddress = '0x17c8C0b7e092EB19Ed1EA37f7Cd2aCE1c74e08F4'
+  let MoodContract
+  let signer
+   
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum, 'ganache')
+  
+
+  provider.send('eth-requestAccounts', []).then((accounts) =>{ 
+   provider.listAccounts().then((accounts) => {
+      signer = provider.signer(accounts[0])
+
+      MoodContract = new ethers.Contract(ContractAddress, ContractABI, signer)
+   }) 
+  })
+async function getMood(){
+      const mood = await MoodContract.getMood()
+      console.log('mood is ${mood}')
+  }
+  function lempelZivCompress(data) {
+    let dictionary = {};
+    let compressedData = [];
+    let phrase = "";
+  }
+
+    for (let i = 0; i < data.length; i++) {
+        let symbol = data[i];
+        let potentialPhrase = phrase + symbol;
+
+        if (dictionary[potentialPhrase]) {
+            phrase = potentialPhrase;
+        } else {
+            // Add the code for the current phrase to the compressed data
+            compressedData.push(dictionary[phrase]);
+
+            // Add the new phrase to the dictionary
+            dictionary[potentialPhrase] = Object.keys(dictionary).length + 1;
+
+            // Start a new phrase with the current symbol
+            phrase = symbol;
+        }
+    }
+    function lempelZivDecompress(compressedData) {
+      let dictionary = {};
+      let nextCode = 1;
+      let decompressedData = [];
+      
+      let previousCode = compressedData[0];
+      let phrase = String.fromCharCode(previousCode);
+      decompressedData.push(phrase);
+      
+      for (let i = 1; i < compressedData.length; i++) {
+          let code = compressedData[i];
+          let word;
+
+          if (dictionary[code]) {
+              word = dictionary[code];
+          } else if (code === nextCode) {
+              word = phrase + phrase[0];
+          } else {
+              throw new Error("Bad compressed sequence");
+          }
+
+          decompressedData.push(word);
+          dictionary[nextCode] = phrase + word[0];
+          nextCode++;
+          phrase = word;
+      }
+
+      return decompressedData.join('');
+  }
+
+  
+async function setMood(){
+  const mood = document.querySelector('#mood').value
+  await MoodContract.setMood(mood)
+
+  console.log('Setting mood successful')
+  }
+# CSS code
+body {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(0, 200, 255);
+
+}
+
+div {
+    width: 20%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+}
+
+button {
+    width: 100%;
+    margin: 10px 0px 5px 0px;
+    border-radius: 20px;
+    padding:10px;
+    background-color:rgb(234, 234, 14);
+    cursor:pointer;
+}   
+  
+.b1{
+    background-color: rgb(21, 186, 21);
+    
+
+
+
+}
+#mood{
+    padding:10px;
+    border-radius: 5px;
+
+
+
+}
+#html code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building our first Dapp</title>
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+    <div>
+        <h1>This is my dApp from lw3</h1>
+        <p>Here we can set or get the mood:</p>
+        <label for="mood">Input Mood:</label> <br>
+        <input type="text" id="mood" placeholder="type text" />
+        <button onclick="getMood()">Get Mood</button>
+        <button onclick="setMood()" class="b1">Set Mood</button>
+    </div>
+    <script
+     src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+     type="application/javascript"
+    >0xcC3A10B2d8b7dBf994AD2B866FbDC4bD4D84e679</script>
+    <script src="./script.js"></script>
+    
+</body>
+</html>
